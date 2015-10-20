@@ -226,20 +226,14 @@ def find_device(ec2, device_id, isinstance=True):
     """ Attempt to find the EC2 instance and return it """
 
     if isinstance:
-        try:
-            reservations = ec2.get_all_reservations(instance_ids=[device_id])
-        except boto.exception.EC2ResponseError, e:
-            module.fail_json(msg=str(e))
+        reservations = ec2.get_all_reservations(instance_ids=[device_id])
 
         if len(reservations) == 1:
             instances = reservations[0].instances
             if len(instances) == 1:
                 return instances[0]
     else:
-        try:
-            interfaces = ec2.get_all_network_interfaces(network_interface_ids=[device_id])
-        except boto.exception.EC2ResponseError, e:
-            module.fail_json(msg=str(e))
+        interfaces = ec2.get_all_network_interfaces(network_interface_ids=[device_id])
 
         if len(interfaces) == 1:
             return interfaces[0]
